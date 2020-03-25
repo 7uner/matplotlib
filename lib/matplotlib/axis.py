@@ -832,6 +832,10 @@ class Axis(martist.Artist):
         self.stale = True
 
     def set_tick_hoizontal_alignment(self, align):
+        accepted_align = ['left', 'right', 'center']
+        if (align not in accepted_align):
+            raise ValueError(
+                "keyword %s is not recognized; valid keywords are %s"% (align, accepted_align))
         self._horizontal_alignment = align
 
     @staticmethod
