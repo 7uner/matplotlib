@@ -1137,7 +1137,7 @@ class Axis(martist.Artist):
         ticks_to_draw = self._update_ticks()
         ticklabelBoxes, ticklabelBoxes2 = self._get_tick_bboxes(ticks_to_draw, renderer)
 
-        self._align_ticks(ticks_to_draw, ticklabelBoxes)
+        self._align_ticks(renderer, ticks_to_draw, ticklabelBoxes)
 
         for tick in ticks_to_draw:
             tick.draw(renderer)
@@ -1158,17 +1158,17 @@ class Axis(martist.Artist):
         renderer.close_group(__name__)
         self.stale = False
 
-    def _align_ticks(self, ticks, tick_bboxes):
+    def _align_ticks(self, renderer, ticks, tick_bboxes):
         max_width = max(bbox.width for bbox in tick_bboxes)
         for tick in ticks:
             label = tick.label1
-            bbox = label.get_tightbbox(self.renderer)
-            padding = self.renderer.pixels_to_points(max_width - bbox.width)
+            bbox = label.get_tightbbox(renderer)
+            padding = renderer.pixels_to_points(max_width - bbox.width)
             if self._tick_horizontal_alignment is 'right':
                 padding = 0
             elif self._tick_horizontal_alignment is 'center':
                 padding /= 2
-            tick.set_pad(padding+2)
+            tick.set_pad(padding + tick.get_pad())
 
     def get_gridlines(self):
         """Return the grid lines as a list of Line2D instance."""
