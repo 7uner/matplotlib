@@ -640,6 +640,7 @@ class Axis(martist.Artist):
         The minor ticks.
     """
     OFFSETTEXTPAD = 3
+    _horizontal_alignment = 'right'
 
     def __str__(self):
         return "{}({},{})".format(
@@ -829,6 +830,9 @@ class Axis(martist.Artist):
                 self.offsetText.set_color(kwtrans['labelcolor'])
 
         self.stale = True
+
+    def set_tick_hoizontal_alignment(self, align):
+        self._horizontal_alignment = align
 
     @staticmethod
     def _translate_tick_kw(kw):
