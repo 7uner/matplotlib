@@ -640,7 +640,6 @@ class Axis(martist.Artist):
         The minor ticks.
     """
     OFFSETTEXTPAD = 3
-    _horizontal_alignment = 'right'
 
     def __str__(self):
         return "{}({},{})".format(
@@ -691,6 +690,8 @@ class Axis(martist.Artist):
 
         self.cla()
         self._set_scale('linear')
+
+        self._tick_horizontal_alignment = 'right'
 
     # During initialization, Axis objects often create ticks that are later
     # unused; this turns out to be a very slow step.  Instead, use a custom
@@ -816,6 +817,7 @@ class Axis(martist.Artist):
                 self._minor_tick_kw.clear()
                 self._minor_tick_kw.update(kwtrans)
             self.reset_ticks()
+            self.set_tick_hoizontal_alignment('right')
         else:
             if which in ['major', 'both']:
                 self._major_tick_kw.update(kwtrans)
@@ -833,10 +835,13 @@ class Axis(martist.Artist):
 
     def set_tick_hoizontal_alignment(self, align):
         accepted_align = ['left', 'right', 'center']
-        if (align not in accepted_align):
+        if align not in accepted_align:
             raise ValueError(
                 "keyword %s is not recognized; valid keywords are %s"% (align, accepted_align))
-        self._horizontal_alignment = align
+        self._tick_horizontal_alignment = align
+
+    def get_tick_horizontal_alignment(self):
+        return self._tick_horizontal_alignment
 
     @staticmethod
     def _translate_tick_kw(kw):
