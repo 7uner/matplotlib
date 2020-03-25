@@ -669,6 +669,27 @@ class RendererBase:
         """
         return points
 
+    def pixels_to_points(self, pixels):
+        """
+        Convert display units to points.
+
+        You need to override this function (unless your backend
+        doesn't have a dpi, e.g., postscript or svg).  Some imaging
+        systems assume some value for pixels per inch::
+
+            pixels to points = pixels * 72/pixels_per_inch * 72/dpi
+
+        Parameters
+        ----------
+        pixels : float or array-like
+            a float or a numpy array of float
+
+        Returns
+        -------
+        Pixels converted to points
+        """
+        return pixels
+
     def start_rasterizing(self):
         """
         Switch to the raster renderer.

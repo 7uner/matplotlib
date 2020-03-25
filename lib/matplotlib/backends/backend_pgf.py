@@ -755,6 +755,9 @@ class RendererPgf(RendererBase):
         # docstring inherited
         return points * mpl_pt_to_in * self.dpi
 
+    def pixels_to_points(self, pixels):
+        return pixels / self.dpi / mpl_pt_to_in
+
 
 @cbook.deprecated("3.3", alternative="GraphicsContextBase")
 class GraphicsContextPgf(GraphicsContextBase):

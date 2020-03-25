@@ -316,6 +316,9 @@ class RendererCairo(RendererBase):
         # docstring inherited
         return points / 72 * self.dpi
 
+    def pixels_to_points(self, pixels):
+        return pixels * 72 / self.dpi
+
 
 class GraphicsContextCairo(GraphicsContextBase):
     _joind = {

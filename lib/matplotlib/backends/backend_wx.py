@@ -311,6 +311,9 @@ class RendererWx(RendererBase):
         # docstring inherited
         return points * (PIXELS_PER_INCH / 72.0 * self.dpi / 72.0)
 
+    def pixels_to_points(self, pixels):
+        return pixels / (PIXELS_PER_INCH / 72.0 * self.dpi / 72.0)
+
 
 class GraphicsContextWx(GraphicsContextBase):
     """

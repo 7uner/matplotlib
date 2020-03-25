@@ -257,6 +257,9 @@ class RendererAgg(RendererBase):
         # docstring inherited
         return points * self.dpi / 72
 
+    def pixels_to_points(self, pixels):
+        return pixels * 72 / self.dpi
+
     def buffer_rgba(self):
         return memoryview(self._renderer)
 

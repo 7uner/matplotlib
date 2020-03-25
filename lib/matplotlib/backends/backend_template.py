@@ -104,6 +104,9 @@ class RendererTemplate(RendererBase):
         # else
         #return points/72.0 * self.dpi.get()
 
+    def pixels_to_points(self, pixels):
+        return pixels
+
 
 class GraphicsContextTemplate(GraphicsContextBase):
     """
