@@ -691,7 +691,7 @@ class Axis(martist.Artist):
         self.cla()
         self._set_scale('linear')
 
-        self._tick_horizontal_alignment = 'right'
+        self._ticklabel_horizontal_alignment = 'right'
 
     # During initialization, Axis objects often create ticks that are later
     # unused; this turns out to be a very slow step.  Instead, use a custom
@@ -817,7 +817,7 @@ class Axis(martist.Artist):
                 self._minor_tick_kw.clear()
                 self._minor_tick_kw.update(kwtrans)
             self.reset_ticks()
-            self.set_tick_hoizontal_alignment('right')
+            self.set_ticklabel_horizontal_alignment('right')
         else:
             if which in ['major', 'both']:
                 self._major_tick_kw.update(kwtrans)
@@ -833,15 +833,15 @@ class Axis(martist.Artist):
 
         self.stale = True
 
-    def set_tick_hoizontal_alignment(self, align):
+    def set_ticklabel_horizontal_alignment(self, align):
         accepted_align = ['left', 'right', 'center']
         if align not in accepted_align:
             raise ValueError(
                 "keyword %s is not recognized; valid keywords are %s"% (align, accepted_align))
-        self._tick_horizontal_alignment = align
+        self._ticklabel_horizontal_alignment = align
 
-    def get_tick_horizontal_alignment(self):
-        return self._tick_horizontal_alignment
+    def get_ticklabel_horizontal_alignment(self):
+        return self._ticklabel_horizontal_alignment
 
     @staticmethod
     def _translate_tick_kw(kw):
@@ -1158,17 +1158,8 @@ class Axis(martist.Artist):
         renderer.close_group(__name__)
         self.stale = False
 
-    def _align_ticks(self, renderer, ticks, tick_bboxes):
-        max_width = max(bbox.width for bbox in tick_bboxes)
-        for tick in ticks:
-            label = tick.label1
-            bbox = label.get_tightbbox(renderer)
-            padding = renderer.pixels_to_points(max_width - bbox.width)
-            if self._tick_horizontal_alignment is 'right':
-                padding = 0
-            elif self._tick_horizontal_alignment is 'center':
-                padding /= 2
-            tick.set_pad(padding + tick.get_pad())
+    def _align_ticks(self, renderer, ticks, tick_boxes):
+        raise NotImplementedError('Derived must override')
 
     def get_gridlines(self):
         """Return the grid lines as a list of Line2D instance."""
@@ -2404,3 +2395,15 @@ class YAxis(Axis):
             return int(np.floor(length / size))
         else:
             return 2**31 - 1
+
+    def _align_ticks(self, renderer, ticks, tick_boxes):
+        max_width = max(bbox.width for bbox in tick_boxes)
+        for tick in ticks:
+            label = tick.label1
+            bbox = label.get_tightbbox(renderer)
+            padding = renderer.pixels_to_points(max_width - bbox.width)
+            if self._tick_horizontal_alignment is 'right':
+                padding = 0
+            elif self._tick_horizontal_alignment is 'center':
+                padding /= 2
+            tick.set_pad(padding + tick.get_pad())
