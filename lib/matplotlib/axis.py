@@ -837,7 +837,7 @@ class Axis(martist.Artist):
         accepted_align = ['left', 'right', 'center']
         if align not in accepted_align:
             raise ValueError(
-                "keyword %s is not recognized; valid keywords are %s"% (align, accepted_align))
+                "keyword %s is not recognized; valid keywords are %s" % (align, accepted_align))
         self._ticklabel_horizontal_alignment = align
 
     def get_ticklabel_horizontal_alignment(self):
@@ -2110,6 +2110,9 @@ class XAxis(Axis):
             return int(np.floor(length / size))
         else:
             return 2**31 - 1
+
+    def set_ticklabel_horizontal_alignment(self, align):
+        raise NotImplementedError('Derived must override')
 
 
 class YAxis(Axis):
