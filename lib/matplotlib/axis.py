@@ -1159,7 +1159,7 @@ class Axis(martist.Artist):
         self.stale = False
 
     def _align_ticks(self, renderer, ticks, tick_boxes):
-        raise NotImplementedError('Derived must override')
+        pass
 
     def get_gridlines(self):
         """Return the grid lines as a list of Line2D instance."""
@@ -2402,8 +2402,8 @@ class YAxis(Axis):
             label = tick.label1
             bbox = label.get_tightbbox(renderer)
             padding = renderer.pixels_to_points(max_width - bbox.width)
-            if self._tick_horizontal_alignment is 'right':
+            if self._ticklabel_horizontal_alignment == 'right':
                 padding = 0
-            elif self._tick_horizontal_alignment is 'center':
+            elif self._ticklabel_horizontal_alignment == 'center':
                 padding /= 2
             tick.set_pad(padding + tick.get_pad())
