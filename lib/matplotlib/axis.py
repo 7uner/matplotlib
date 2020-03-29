@@ -837,7 +837,7 @@ class Axis(martist.Artist):
         accepted_align = ['left', 'right', 'center']
         if align not in accepted_align:
             raise ValueError(
-                "keyword %s is not recognized; valid keywords are %s" % (align, accepted_align))
+                "keyword %s is not recognized; valid keywords are %s"% (align, accepted_align))
         self._ticklabel_horizontal_alignment = align
 
     def get_ticklabel_horizontal_alignment(self):
