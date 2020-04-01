@@ -6392,3 +6392,63 @@ def test_polar_interpolation_steps_variable_r(fig_test, fig_ref):
     l.get_path()._interpolation_steps = 100
     fig_ref.add_subplot(projection="polar").plot(
         np.linspace(0, np.pi/2, 101), np.linspace(1, 2, 101))
+
+
+def test_ticklabel_horizontal_alignment_right():
+    x = np.logspace(-2, 3)
+    y = 1 / (np.ma.exp(1 / x) - 1)
+    fig = plt.figure(1, figsize=(4, 4))
+    plt.loglog(x, y)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.tight_layout()
+    ax = plt.gca()
+    render = fig.canvas.renderer
+    ax.yaxis.set_ticklabel_horizontal_alignment('right')
+    ticks = ax.yaxis._update_ticks()
+    fig.draw(render)
+    ref = ticks[0].label1.get_tightbbox(render).xmax
+    for tick in ticks:
+        label = tick.label1
+        bbox = label.get_tightbbox(render)
+        assert bbox.xmax == ref
+
+
+def test_ticklabel_horizontal_alignment_left():
+    x = np.logspace(-2, 3)
+    y = 1 / (np.ma.exp(1 / x) - 1)
+    fig = plt.figure(1, figsize=(4, 4))
+    plt.loglog(x, y)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.tight_layout()
+    ax = plt.gca()
+    render = fig.canvas.renderer
+    ax.yaxis.set_ticklabel_horizontal_alignment('left')
+    ticks = ax.yaxis._update_ticks()
+    fig.draw(render)
+    ref = round(ticks[0].label1.get_tightbbox(render).xmin, 5)
+    for tick in ticks:
+        label = tick.label1
+        bbox = label.get_tightbbox(render)
+        assert round(bbox.xmin, 5) == ref
+
+
+def test_ticklabel_horizontal_alignment_center():
+    x = np.logspace(-2, 3)
+    y = 1 / (np.ma.exp(1 / x) - 1)
+    fig = plt.figure(1, figsize=(4, 4))
+    plt.loglog(x, y)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.tight_layout()
+    ax = plt.gca()
+    render = fig.canvas.renderer
+    ax.yaxis.set_ticklabel_horizontal_alignment('center')
+    ticks = ax.yaxis._update_ticks()
+    fig.draw(render)
+    ref = round(ticks[0].label1.get_tightbbox(render).xmin + ticks[0].label1.get_tightbbox(render).width/2, 5)
+    for tick in ticks:
+        label = tick.label1
+        bbox = label.get_tightbbox(render)
+        assert round(bbox.xmin + bbox.width/2, 5) == ref
